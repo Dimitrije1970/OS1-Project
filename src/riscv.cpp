@@ -32,7 +32,7 @@ void RiscV::handleEcallInterrupt() {
             __asm__ volatile ("ld %0, 11*8(fp)" : "=r"(num_of_blocks));
             __asm__ volatile ("ld %0, 12*8(fp)" : "=r"(ret));
 
-            *ret = (uint64) __mem_alloc(num_of_blocks * MEM_BLOCK_SIZE);
+            *ret = (uint64) MemoryAllocator::getInstance().mallocBytes(num_of_blocks * MEM_BLOCK_SIZE);
 
         }else if(a0 == MEM_FREE){
             void* ptr;
@@ -41,7 +41,7 @@ void RiscV::handleEcallInterrupt() {
             __asm__ volatile ("ld %0, 11*8(fp)" : "=r"(ptr));
             __asm__ volatile ("ld %0, 12*8(fp)" : "=r"(ret));
 
-            *ret = __mem_free(ptr);
+            *ret = MemoryAllocator::getInstance().free(ptr);
 
         }else if(a0 == THREAD_CREATE){
             thread_t* handle;
@@ -64,7 +64,7 @@ void RiscV::handleEcallInterrupt() {
 
             TCB::dispatch();
 
-            __mem_free(temp);
+            MemoryAllocator::getInstance().free(temp);
 
         }else if(a0 == THREAD_DISPATCH){
             TCB::time_slice_counter = 0;

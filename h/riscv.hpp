@@ -2,7 +2,7 @@
 #define PROJECT_BASE_V1_1_RISCV_HPP
 
 #include "../lib/hw.h"
-#include "../lib/mem.h"
+#include "../h/MemoryAllocator.hpp"
 #include "../h/syscall_c.h"
 #include "../h/sem.hpp"
 #include "../h/SleepingThreadsList.hpp"

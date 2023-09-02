@@ -20,13 +20,13 @@ void SleepingThreadsList::remove_finished() {
         if(!head) {tail = nullptr;}
         elem->thread->set_sleeping(false);
         Scheduler::put(elem->thread);
-        __mem_free(elem);
+        MemoryAllocator::getInstance().free(elem);
     }
 }
 
 void SleepingThreadsList::put(TCB *thread, time_t slice) {
     if(head == nullptr){
-        head = (Node*) __mem_alloc(sizeof(Node));
+        head = (Node*) MemoryAllocator::getInstance().mallocBytes(sizeof(Node));
         head->thread = thread;
         head->next = nullptr;
         head->slice = slice;
@@ -41,7 +41,7 @@ void SleepingThreadsList::put(TCB *thread, time_t slice) {
         }
         if(temp == tail) {
             if(slice >= tail->slice){
-                Node* novi = (Node*) __mem_alloc(sizeof(Node));
+                Node* novi = (Node*) MemoryAllocator::getInstance().mallocBytes(sizeof(Node));
                 novi->thread = thread;
                 novi->next = nullptr;
                 novi->slice = slice - tail->slice;
@@ -49,7 +49,7 @@ void SleepingThreadsList::put(TCB *thread, time_t slice) {
                 tail = novi;
             }
             else {
-                Node* novi = (Node*) __mem_alloc(sizeof(Node));
+                Node* novi = (Node*) MemoryAllocator::getInstance().mallocBytes(sizeof(Node));
                 novi->thread = thread;
                 novi->next = tail;
                 novi->slice= slice;
@@ -62,7 +62,7 @@ void SleepingThreadsList::put(TCB *thread, time_t slice) {
             }
         }
         else {
-            Node* novi = (Node*) __mem_alloc(sizeof(Node));
+            Node* novi = (Node*) MemoryAllocator::getInstance().mallocBytes(sizeof(Node));
             novi->thread = thread;
             novi->next  = temp;
             novi->slice = slice;

@@ -1,5 +1,5 @@
 #include "../h/scheduler.hpp"
-#include "../lib/mem.h"
+#include "../h/MemoryAllocator.hpp"
 
 Scheduler::Node* Scheduler::head = nullptr;
 Scheduler::Node* Scheduler::tail = nullptr;
@@ -11,13 +11,13 @@ TCB* Scheduler::get() {
     head = head->next;
     if(!head) tail = nullptr;
     TCB* tcb = res->tcb;
-    __mem_free(res);
+    MemoryAllocator::getInstance().free(res);
 
     return tcb;
 }
 
 void Scheduler::put(TCB *tcb) {
-    Node* new_node = (Node*) __mem_alloc(sizeof(Node));
+    Node* new_node = (Node*) MemoryAllocator::getInstance().mallocBytes(sizeof(Node));
     new_node->tcb = tcb;
     new_node->next = nullptr;
 

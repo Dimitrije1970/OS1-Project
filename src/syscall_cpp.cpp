@@ -80,7 +80,7 @@ void PeriodicThread::wrapper(void* arg) {
         ps->periodic_thread->periodicActivation();
     }
 
-    __mem_free(ps);
+    MemoryAllocator::getInstance().free(ps);
 }
 
 void PeriodicThread::terminate() {
@@ -90,7 +90,7 @@ void PeriodicThread::terminate() {
 PeriodicThread::PeriodicThread(time_t period) {
     this->period = period;
 
-    periodic_s* ps = (periodic_s*) __mem_alloc(sizeof(periodic_s));
+    periodic_s* ps = (periodic_s*) MemoryAllocator::getInstance().mallocBytes(sizeof(periodic_s));
     ps->periodic_thread = this;
     ps->period = period;
 
@@ -104,5 +104,4 @@ char Console::getc() {
 void Console::putc(char c) {
     __putc(c);
 }
-
 

@@ -1,7 +1,7 @@
 #ifndef PROJECT_BASE_V1_1_SYSCALL_CPP_HPP
 #define PROJECT_BASE_V1_1_SYSCALL_CPP_HPP
 
-#include "../lib/mem.h"
+#include "../h/MemoryAllocator.hpp"
 #include "../h/syscall_c.h"
 #include "../h/tcb.hpp"
 
