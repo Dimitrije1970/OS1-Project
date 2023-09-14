@@ -15,9 +15,6 @@ private:
     int val, num_of_blocked_threads;
     Node *head;
 
-//    void block();
-//    void unblock();
-
     TCB* peek_first();
     void add_last(TCB* tcb);
     TCB* remove_first();

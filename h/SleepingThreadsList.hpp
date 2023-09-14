@@ -6,18 +6,15 @@
 
 class SleepingThreadsList{
 private:
-
-    struct Node{
+    struct Elem{
         TCB* thread;
         time_t slice;
-        Node* next;
+        Elem* next;
     };
 
-    Node *head, *tail;
+    Elem *head, *tail;
 public:
-    SleepingThreadsList() : head(nullptr), tail(nullptr) {}
-    SleepingThreadsList(const SleepingThreadsList&)=delete;
-    SleepingThreadsList& operator=(const SleepingThreadsList&)=delete;
+    SleepingThreadsList();
 
     void dec_time_first();
     time_t peek_time_first();

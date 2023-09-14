@@ -4,38 +4,30 @@
 #include "../lib/hw.h"
 
 class MemoryAllocator{
-public:
-    static MemoryAllocator& getInstance();
+private:
+    struct Segment{
+        size_t size;
+        Segment* next;
+    };
 
+    Segment* head = nullptr;
+
+    MemoryAllocator();
+
+    static void* allocateBlocks(Segment* &header, size_t size);
+    static bool tryToJoin(const MemoryAllocator::Segment *left, const MemoryAllocator::Segment *right);
+
+public:
     MemoryAllocator(const MemoryAllocator&)=delete;
     MemoryAllocator& operator=(const MemoryAllocator&)=delete;
 
     void* malloc(size_t);
-    void * mallocBytes(size_t);
+    void* mallocBytes(size_t);
 
     int free(void*);
 
-    static size_t bytesToBlocks(size_t bytes) { return (bytes + MEM_BLOCK_SIZE -1) / MEM_BLOCK_SIZE; }
-
-private:
-    struct Header{
-        size_t size;
-        Header* next;
-    };
-
-    Header* head = nullptr;
-
-    MemoryAllocator();
-    ~MemoryAllocator()=default;
-
-    void reset();
-
-    static void* allocateBlocks(Header* &header, const size_t size);
-    static inline bool areHeadersMergable(const Header* left, const Header* right);
+    static MemoryAllocator& getInstance();
+    static size_t convert(size_t bytes) { return (bytes + MEM_BLOCK_SIZE - 1) / MEM_BLOCK_SIZE; }
 };
-
-bool MemoryAllocator::areHeadersMergable(const MemoryAllocator::Header *left, const MemoryAllocator::Header *right) {
-    return (size_t) left + (left->size + 1) * MEM_BLOCK_SIZE == (size_t) right;
-}
 
 #endif //PROJECT_BASE_V1_1_MEMORYALLOCATOR_HPP
